@@ -8,6 +8,15 @@ const getBoards = (req, res, next) => {
   });
 };
 
+const getBoard = (req, res, next) => {
+  let id = req.params.id;
+  Board.findById(id).then((board) => {
+    res.json(board);
+  }).catch((e) => {
+    console.error(e);
+  })
+};
+
 const createBoard = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -30,3 +39,4 @@ const createBoard = (req, res, next) => {
 
 exports.getBoards = getBoards;
 exports.createBoard = createBoard;
+exports.getBoard = getBoard;
