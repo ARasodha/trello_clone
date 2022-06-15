@@ -1,16 +1,18 @@
 const Board = require("../models/board");
+const List = require("../models/list")
+const Card = require("../models/card")
 const HttpError = require("../models/httpError");
 const { validationResult } = require("express-validator");
 
 const getBoards = (req, res, next) => {
-  Board.find({}, "title _id createdAt updatedAt").then((boards) => {
+  Board.find({}, "title _id createdAt updatedAt").populate("lists").then((boards) => {
     res.json(boards);
   });
 };
 
 const getBoard = (req, res, next) => {
   let id = req.params.id;
-  Board.findById(id).then((board) => {
+  Board.findById(id).populate({path: 'lists', populate: { path: 'cards'}}).then((board) => {
     res.json(board);
   }).catch((e) => {
     console.error(e);

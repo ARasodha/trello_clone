@@ -8,6 +8,11 @@ export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
   return data;
 });
 
+export const fetchBoard = createAsyncThunk("boards/fetchBoard", async (id) => {
+  const data = await apiClient.getBoard(id);
+  return data;
+});
+
 export const createBoard = createAsyncThunk(
   "boards/createBoard",
   async (newBoard, callback) => {
