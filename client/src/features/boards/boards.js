@@ -10,7 +10,10 @@ export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
 
 export const fetchBoard = createAsyncThunk("boards/fetchBoard", async (id) => {
   const data = await apiClient.getBoard(id);
+  console.log('data', data)
   return data;
+  // import to list w/o cards and card w/o list reducer
+  // extract list/card from board
 });
 
 export const createBoard = createAsyncThunk(
@@ -38,6 +41,16 @@ const boardSlice = createSlice({
     }),
       builder.addCase(createBoard.fulfilled, (state, action) => {
         state.push(action.payload);
+      });
+      builder.addCase(fetchBoard.fulfilled, (state, action) => {
+        const found = state.find(b => b._id === action.payload._id);
+        const {lists, ...boardWithoutLists} = action.payload;
+
+        if (!found) {
+          return state.concat(boardWithoutLists)
+        }
+
+        return state;
       });
   },
 });

@@ -75,4 +75,9 @@ const {cards, ...listWithoutCards} = l;
 return listWithoutCards;
 })
 return filteredLists.concat(listsWithoutCards)
+
+Friday:
+board.lists.push(listId)
+board.save(done)
+
 */

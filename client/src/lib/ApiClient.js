@@ -23,7 +23,7 @@ const apiClient = {
       logError(e);
     }
   },
-  getBoard: async (ID) => {
+  getBoard: async (id) => {
     try {
       const { data } = await axios.get(routes.BOARDS_INDEX_URL + `/${id}`);
       return data
@@ -39,6 +39,14 @@ const apiClient = {
       logError(e);
     }
   },
+  createList: async (list) => {
+    try {
+      const { data } = await axios.post(routes.CREATE_LIST_URL, { list });
+      return data;
+    } catch (e) {
+      logError(e);
+    }
+  }
 };
 
 export default apiClient;
