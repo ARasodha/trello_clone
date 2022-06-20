@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom'
 import { fetchBoard } from "../../features/boards/boards";
@@ -7,20 +7,33 @@ import Card from './Card'
 const List = ({ list }) => {
   const dispatch = useDispatch();
   const id = useParams().id;
+  const [toggleListTitle, setToggleListTitle] = useState(false);
+  const [listTitle, setListTitle] = useState(list.title)
 
-  const cards = useSelector(state => state.cards).filter(card => card.boardId === id);
+
+  const cards = useSelector(state => state.cards).filter(card => card.listId === list._id);
 
   useEffect(() => {
     dispatch(fetchBoard(id));
   }, [dispatch, id])
-  console.log('Cards component cards', cards)
+
+  const handleToggleListTitle = () => {
+    setToggleListTitle(!toggleListTitle);
+  }
+
+  const handleUpdateListTitle = (e) => {
+    setListTitle(e.target.value);
+  }
+
   return (
     <div className="list-wrapper">
               <div className="list-background">
                 <div className="list">
                   <a className="more-icon sm-icon" href=""></a>
                   <div>
-                    <p className="list-title">{list.title}</p>
+                    {toggleListTitle ? 
+                     <input className="list-title" value={listTitle} onChange={handleUpdateListTitle} /> :
+                    <p className="list-title" onClick={handleToggleListTitle}>{listTitle}</p>}
                   </div>
                   <div className="add-dropdown add-top">
                     <div className="card"></div>

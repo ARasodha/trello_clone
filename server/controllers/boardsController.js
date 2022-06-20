@@ -39,6 +39,13 @@ const createBoard = (req, res, next) => {
   }
 };
 
+const addListToBoard = (req, res, next) => {
+  const listId = req.list._id;
+  const boardId = req.list.boardId;
+  Board.findByIdAndUpdate(boardId, { $addToSet: { lists: listId } }).then(() => next());
+}
+
 exports.getBoards = getBoards;
 exports.createBoard = createBoard;
 exports.getBoard = getBoard;
+exports.addListToBoard = addListToBoard;

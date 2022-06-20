@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom'
 import { fetchBoard } from "../../features/boards/boards";
 import List from './List'
+import { createList } from '../../features/lists/lists';
 
 const Board = () => {
   const dispatch = useDispatch();
@@ -10,10 +11,39 @@ const Board = () => {
 
   const board = useSelector(state => state.boards).find(b => b._id === id);
   const lists = useSelector((state) => state.lists).filter(list => list.boardId === id);
-
+  const [showListForm, setShowListForm] = useState(false);
+  const [inputFormValue, setInputFormValue] = useState('');
+  
   useEffect(() => {
     dispatch(fetchBoard(id));
   }, [dispatch, id])
+
+  const listFormClass = showListForm ? 'new-list selected' : 'new-list';
+
+  const handleToggleListForm = (e) => {
+    if (e.target.tagName === 'INPUT' && showListForm) {
+      return
+    }
+    setShowListForm(!showListForm);
+  }
+
+  const handleFormInput = (e) => {
+    setInputFormValue(e.target.value)
+
+  }
+
+  const handleSubmitListForm = (e) => {
+    const newList = {
+      boardId: id,
+      list: {
+        title: inputFormValue
+      }
+    }
+
+    dispatch(createList(newList));
+
+    setInputFormValue('');
+  }
 
   if (!board) {
     return null;
@@ -41,12 +71,12 @@ const Board = () => {
               return <List list={list} />
             })}
           </div>
-          <div id="new-list" className="new-list">
+          <div id="new-list" className={listFormClass} onClick={handleToggleListForm}>
             <span>Add a list...</span>
-            <input type="text" placeholder="Add a list..." />
+            <input type="text" onChange={handleFormInput} value={inputFormValue} placeholder="Add a list..." />
             <div>
-              <input type="submit" className="button" value="Save" />
-              <i className="x-icon icon"></i>
+              <input type="submit" className="button" value="Save" onClick={handleSubmitListForm} />
+              <i className="x-icon icon" onClick={handleToggleListForm}></i>
             </div>
           </div>
         </div>
