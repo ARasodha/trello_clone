@@ -33,10 +33,11 @@ const createList = (req, res, next) => {
 };
 
 const updateList = (req, res, next) => {
-  const errors = validationResult(req);
+  // const errors = validationResult(req);
   const id = req.params.id;
-  const { list } = req.body;
-  if (errors.isEmpty()) {
+  console.log(req.body)
+  const list = req.body;
+  // if (errors.isEmpty()) {
     List.findByIdAndUpdate(id, {title: list.title})
       .then((list) => {
         res.json({
@@ -46,15 +47,16 @@ const updateList = (req, res, next) => {
           createdAt: list.createdAt,
           updatedAt: list.updatedAt
         })
+      })
     .catch((err) =>
         next(new HttpError("Editing list title failed, please try again", 500))
-      })
-  } else {
-    return next(new HttpError("The edit list title field is empty.", 404));
-  }
-
+    );
+  // } else {
+  //   return next(new HttpError("The edit list title field is empty.", 404));
+  // }
 }
 
 exports.createList = createList;
 exports.sendList = sendList;
+exports.updateList = updateList;
 

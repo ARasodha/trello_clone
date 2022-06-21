@@ -46,7 +46,18 @@ const apiClient = {
     } catch (e) {
       logError(e);
     }
+  },
+  updateList: async (id, title) => {
+    console.log(title)
+    try {
+      const req = await axios.put(routes.CREATE_LIST_URL + `/${id}`, title);
+      console.log('request', req)
+      return req.data;
+    } catch(e) {
+      logError(e);
+    }
   }
+  
 };
 
 export default apiClient;

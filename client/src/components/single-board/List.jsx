@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom'
 import { fetchBoard } from "../../features/boards/boards";
+import { updateList } from "../../features/lists/lists";
 import Card from './Card'
 
 const List = ({ list }) => {
@@ -25,6 +26,14 @@ const List = ({ list }) => {
     setListTitle(e.target.value);
   }
 
+  const handleListTitleSubmit = (e) => {
+    if (e.key === 'Enter') {
+    console.log('listTitle from List.jsx', listTitle);
+    dispatch(updateList({id: list._id, newTitle: listTitle}));
+    handleToggleListTitle();
+    }
+  }
+
   return (
     <div className="list-wrapper">
               <div className="list-background">
@@ -32,7 +41,7 @@ const List = ({ list }) => {
                   <a className="more-icon sm-icon" href=""></a>
                   <div>
                     {toggleListTitle ? 
-                     <input className="list-title" value={listTitle} onChange={handleUpdateListTitle} /> :
+                     <input className="list-title" value={listTitle} onChange={handleUpdateListTitle} onKeyPress={handleListTitleSubmit} /> :
                     <p className="list-title" onClick={handleToggleListTitle}>{listTitle}</p>}
                   </div>
                   <div className="add-dropdown add-top">
