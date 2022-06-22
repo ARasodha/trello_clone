@@ -1,12 +1,39 @@
-import { useSelector } from "react-redux";
-import { useParams } from 'react-router-dom'
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { fetchCard } from "../../features/cards/cards";
+import { fetchBoard } from "../../features/boards/boards";
+
 
 const FullCard = () => {
   const id = useParams().id;
-  const card = useSelector(state => state.cards).find(card => card._id === id);
-  const listId = card.listId;
-  const listTitle = useSelector(state => state.lists).find(list => list._id === listId).title;
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchCard(id));
+  }, [dispatch, id]);
+
+
+    const card = useSelector(state => state.cards).find(card => card._id === id);
+    console.log(card);
+    const lists = useSelector(state => state.lists);
+    let listId;
+    if (card) {
+      listId = card.listId;
+    }
+
+    const list = lists.find(list => list._id === listId);
+    let listTitle;
+    
+    if (list) {
+      listTitle = list.title
+    }
+  
+
+    if (!listTitle) {
+      return null;
+    }
+    
     return (
       <div id="modal-container">
         <div className="screen"></div>

@@ -20,9 +20,7 @@ export const updateList = createAsyncThunk(
   async (args) => {
     const {id, newTitle } = args;
     const payload = { title: newTitle }
-    console.log('payload from lists.js', payload)
     const data = await apiClient.updateList(id, payload)
-    console.log('data from lists.js', data)
     return data;
   }
 )
@@ -40,7 +38,7 @@ const listSlice = createSlice({
         const {cards, ...listWithoutCards} = l;
         return listWithoutCards;
       })
-      
+      console.log('lists without cards', listsWithoutCards)
       return filteredLists.concat(listsWithoutCards)
     }),
     builder.addCase(createList.fulfilled, (state, action) => {

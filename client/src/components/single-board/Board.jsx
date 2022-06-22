@@ -1,50 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { fetchBoard } from "../../features/boards/boards";
-import List from './List'
-import { createList } from '../../features/lists/lists';
+import AllLists from "./AllLists";
 
 const Board = () => {
   const dispatch = useDispatch();
   const id = useParams().id;
+  let boardId;
+  const cards = useSelector(state => state.cards);
+  const foundCard = cards.find(c => c._id === id);
 
-  const board = useSelector(state => state.boards).find(b => b._id === id);
-  const lists = useSelector((state) => state.lists).filter(list => list.boardId === id);
-  const [showListForm, setShowListForm] = useState(false);
-  const [inputFormValue, setInputFormValue] = useState('');
+  const location = useLocation();
+  if (location.pathname.includes('boards')) {
+    boardId = id;  
+  } else {
+    if (foundCard) {
+      boardId = foundCard.boardId;
+    }
+  }
+
+  const board = useSelector(state => state.boards).find(b => b._id === boardId);
   
   useEffect(() => {
-    dispatch(fetchBoard(id));
-  }, [dispatch, id])
-
-  const listFormClass = showListForm ? 'new-list selected' : 'new-list';
-
-  const handleToggleListForm = (e) => {
-    if (e.target.tagName === 'INPUT' && showListForm) {
-      return
+    if (boardId) {
+      dispatch(fetchBoard(boardId));
     }
-    setShowListForm(!showListForm);
-  }
+  }, [dispatch, boardId])
 
-  const handleFormInput = (e) => {
-    setInputFormValue(e.target.value)
-
-  }
-
-  const handleSubmitListForm = (e) => {
-    const newList = {
-      boardId: id,
-      list: {
-        title: inputFormValue
-      }
-    }
-
-    dispatch(createList(newList));
-
-    setInputFormValue('');
-  }
-
+  
   if (!board) {
     return null;
   }
@@ -53,7 +37,7 @@ const Board = () => {
     <>
        <header>
         <ul>
-          <li id="title">My Title</li>
+          <li id="title">{board.title}</li>
           <li className="star-icon icon"></li>
           <li className="private private-icon icon">Private</li>
         </ul>
@@ -65,21 +49,7 @@ const Board = () => {
         </div>
       </header>
       <main>
-        <div id="list-container" className="list-container">
-          <div id="existing-lists" className="existing-lists">
-            {lists.map(list => {
-              return <List list={list} />
-            })}
-          </div>
-          <div id="new-list" className={listFormClass} onClick={handleToggleListForm}>
-            <span>Add a list...</span>
-            <input type="text" onChange={handleFormInput} value={inputFormValue} placeholder="Add a list..." />
-            <div>
-              <input type="submit" className="button" value="Save" onClick={handleSubmitListForm} />
-              <i className="x-icon icon" onClick={handleToggleListForm}></i>
-            </div>
-          </div>
-        </div>
+        <AllLists boardId={boardId} />
       </main>
       <div className="menu-sidebar">
         <div id="menu-main" className="main slide">

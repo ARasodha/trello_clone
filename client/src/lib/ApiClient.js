@@ -48,11 +48,21 @@ const apiClient = {
     }
   },
   updateList: async (id, title) => {
-    console.log(title)
+    // console.log(title)
     try {
-      const req = await axios.put(routes.CREATE_LIST_URL + `/${id}`, title);
-      console.log('request', req)
-      return req.data;
+      const { data } = await axios.put(routes.CREATE_LIST_URL + `/${id}`, title);
+      // console.log('request', req)
+      return data;
+    } catch(e) {
+      logError(e);
+    }
+  },
+  getCard: async (id) => {
+    console.log(' id from api client', id)
+    try {
+      const { data } = await axios.get(routes.CARDS_INDEX_URL + `/${id}`);
+      console.log(data)
+      return data;
     } catch(e) {
       logError(e);
     }

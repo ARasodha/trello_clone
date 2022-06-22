@@ -4,6 +4,14 @@ import { fetchBoard } from "../boards/boards";
 
 const initialState = [];
 
+export const fetchCard = createAsyncThunk(
+  "cards/fetchCard",
+  async (id) => {
+    const data = await apiClient.getCard(id);
+    console.log('from fetchcard', data);
+    return data;
+  })
+
 const cardSlice = createSlice({
   name: "cards",
   initialState,
@@ -14,12 +22,26 @@ const cardSlice = createSlice({
       const lists = board.lists; 
       const cards = [];
       lists.forEach(l => {
-        console.log('from cards feature', l.cards)
         cards.push(...l.cards);
       })
 
       const filteredCards = state.filter(c => c.boardId !== board._id)
       return filteredCards.concat(cards);
+    })
+    builder.addCase(fetchCard.fulfilled, (state, action) => {
+      const found = state.find(c => c._id === action.payload._id);
+
+      if (!found) {
+        return state.concat(action.payload);
+      }
+
+      return state.map(b => {
+        if (b._id === action.payload._id) {
+          return action.payload;
+        }
+
+        return b;
+      })
     })
   }
 })
