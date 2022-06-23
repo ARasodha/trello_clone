@@ -23,6 +23,7 @@ const Board = () => {
   const board = useSelector(state => state.boards).find(b => b._id === boardId);
   
   useEffect(() => {
+    console.log('board id', boardId)
     if (boardId) {
       dispatch(fetchBoard(boardId));
     }

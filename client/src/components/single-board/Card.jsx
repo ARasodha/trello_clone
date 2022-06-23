@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 
 const Card = ({ card }) => {
   const id = card._id;
-
   return (
     <Link to={`/cards/${id}`}>
       <div className="card-background">

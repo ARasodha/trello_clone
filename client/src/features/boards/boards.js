@@ -10,6 +10,7 @@ export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
 
 export const fetchBoard = createAsyncThunk("boards/fetchBoard", async (id) => {
   const data = await apiClient.getBoard(id);
+  console.log('data from fetch card', data)
   return data;
   // import to list w/o cards and card w/o list reducer
   // extract list/card from board

@@ -38,7 +38,6 @@ const listSlice = createSlice({
         const {cards, ...listWithoutCards} = l;
         return listWithoutCards;
       })
-      console.log('lists without cards', listsWithoutCards)
       return filteredLists.concat(listsWithoutCards)
     }),
     builder.addCase(createList.fulfilled, (state, action) => {

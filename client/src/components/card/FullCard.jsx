@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { fetchCard } from "../../features/cards/cards";
-import { fetchBoard } from "../../features/boards/boards";
-
 
 const FullCard = () => {
   const id = useParams().id;
@@ -15,7 +13,6 @@ const FullCard = () => {
 
 
     const card = useSelector(state => state.cards).find(card => card._id === id);
-    console.log(card);
     const lists = useSelector(state => state.lists);
     let listId;
     if (card) {

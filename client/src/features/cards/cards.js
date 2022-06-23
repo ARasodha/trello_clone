@@ -7,6 +7,7 @@ const initialState = [];
 export const fetchCard = createAsyncThunk(
   "cards/fetchCard",
   async (id) => {
+    console.log('id from fetchcard feature', id)
     const data = await apiClient.getCard(id);
     console.log('from fetchcard', data);
     return data;
