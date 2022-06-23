@@ -9,6 +9,7 @@ const List = ({ list }) => {
   const id = useParams().id;
   const [toggleListTitle, setToggleListTitle] = useState(false);
   const [listTitle, setListTitle] = useState(list.title)
+  const [showCardForm, setShowCardForm] = useState(false);
 
   const handleToggleListTitle = () => {
     setToggleListTitle(!toggleListTitle);
@@ -25,17 +26,21 @@ const List = ({ list }) => {
     }
   }
 
+  const handleShowCardForm = () => {
+    setShowCardForm(!showCardForm);
+  }
+
   return (
-    <div className="list-wrapper">
+    <div className={showCardForm ? "list-wrapper add-dropdown-active" : "list-wrapper"}>
       <div className="list-background">
         <div className="list">
           <a className="more-icon sm-icon" href=""></a>
           <div>
             {toggleListTitle ? 
-              <input className="list-title" value={listTitle} onChange={handleUpdateListTitle} onKeyPress={handleListTitleSubmit} /> :
+              <input className="list-title" value={listTitle} onChange={(e) => handleUpdateListTitle} onKeyPress={handleListTitleSubmit} /> :
             <p className="list-title" onClick={handleToggleListTitle}>{listTitle}</p>}
           </div>
-          <AllCards listId={list._id} />
+          <AllCards listId={list._id} handleShowCardForm={handleShowCardForm} showCardForm={showCardForm} />
         </div>
       </div>
     </div>

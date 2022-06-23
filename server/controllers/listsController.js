@@ -55,7 +55,14 @@ const updateList = (req, res, next) => {
   }
 }
 
+const addCardToList = (req, res, next) => {
+  const cardId = req.card._id;
+  const listId = req.card.listId;
+  List.findByIdAndUpdate(listId, { $addToSet: { cards: cardId }}).then(() => next());
+}
+
 exports.createList = createList;
 exports.sendList = sendList;
 exports.updateList = updateList;
+exports.addCardToList = addCardToList;
 

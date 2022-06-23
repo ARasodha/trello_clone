@@ -13,6 +13,17 @@ export const fetchCard = createAsyncThunk(
     return data;
   })
 
+  export const createCard = createAsyncThunk(
+    "cards/createCard",
+    async (newCard, callback) => {
+      const data = await apiClient.createCard(newCard);
+      if (callback) {
+        callback;
+      }
+      return data;
+    }
+  );
+
 const cardSlice = createSlice({
   name: "cards",
   initialState,
@@ -43,6 +54,9 @@ const cardSlice = createSlice({
 
         return b;
       })
+    })
+    builder.addCase(createCard.fulfilled, (state, action) => {
+      state.push(action.payload);
     })
   }
 })
