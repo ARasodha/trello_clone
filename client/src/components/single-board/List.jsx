@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom'
-import { fetchBoard } from "../../features/boards/boards";
 import { updateList } from "../../features/lists/lists";
 import AllCards from './AllCards'
 
@@ -10,10 +9,6 @@ const List = ({ list }) => {
   const id = useParams().id;
   const [toggleListTitle, setToggleListTitle] = useState(false);
   const [listTitle, setListTitle] = useState(list.title)
-
-  useEffect(() => {
-    dispatch(fetchBoard(id));
-  }, [dispatch, id])
 
   const handleToggleListTitle = () => {
     setToggleListTitle(!toggleListTitle);
