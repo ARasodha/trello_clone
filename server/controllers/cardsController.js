@@ -15,32 +15,30 @@ const getCard = (req, res, next) => {
 
 const createCard = (req, res, next) => {
   const errors = validationResult(req);
-  console.log(errors);
-  console.log(req.body)
+
   const { card, listId } = req.body;
   if (errors.isEmpty()) {
-    console.log('INSIDE FIRST BLOCK')
-    Card.create({title: card.title, listId })
+    Card.create({ title: card.title, listId, boardId: req.boardId })
       .then((card) => {
-        console.log(card)
         req.card = card
         next()
       })
-      .catch((err) =>
+      .catch((err) => {
         next(new HttpError("Creating card failed, please try again", 500))
-      );
+      });
   } else {
     return next(new HttpError("The input field is empty.", 404));
   }
 };
 
-const addBoardIdToCard = (req, res, next) => {
+
+const sendCard = (req, res, next) => {
   const cardId = req.card._id;
-  const listId = req.card.listId;
-  const list = List.findById(listId);
-  Card.findByIdAndUpdate(cardId, { boardId: list.boardId });
+  Card.findById(cardId).then((card) => {
+    res.send(card)
+  });
 }
 
 exports.getCard = getCard;
 exports.createCard = createCard;
-exports.addBoardIdToCard = addBoardIdToCard;
+exports.sendCard = sendCard;

@@ -43,7 +43,7 @@ const AllLists = ({ boardId }) => {
         <div id="list-container" className="list-container">
           <div id="existing-lists" className="existing-lists">
             {lists.map(list => {
-              return <List list={list} />
+              return <List key={list._id} list={list} />
             })}
           </div>
           <div id="new-list" className={listFormClass} onClick={handleToggleListForm}>

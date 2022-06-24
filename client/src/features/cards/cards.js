@@ -15,11 +15,8 @@ export const fetchCard = createAsyncThunk(
 
   export const createCard = createAsyncThunk(
     "cards/createCard",
-    async (newCard, callback) => {
+    async (newCard) => {
       const data = await apiClient.createCard(newCard);
-      if (callback) {
-        callback;
-      }
       return data;
     }
   );

@@ -9,14 +9,14 @@ const AllCards = ({ listId, handleShowCardForm, showCardForm }) => {
 
   const handleChangeTitle = (e) => {
     setCardTitle(e.target.value);
-    console.log('handle change title', cardTitle);
   }
 
   const dispatch = useDispatch();
 
   const handleAddCard = (e) => {
     const newCard = { listId, card: { title: cardTitle} };
-    dispatch(createCard(newCard, handleShowCardForm));
+    dispatch(createCard(newCard));
+    handleShowCardForm();
   }
 
   return (
@@ -31,7 +31,7 @@ const AllCards = ({ listId, handleShowCardForm, showCardForm }) => {
       </div>
       <div id="cards-container" data-id="list-1-cards">
       {cards.map(card => {
-        return <Card card={card} />
+        return <Card key={card._id} card={card} />
       })}
       </div>
       <div className={showCardForm ? "add-dropdown add-bottom active-card" : "add-dropdown add-bottom"}>

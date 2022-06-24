@@ -61,8 +61,20 @@ const addCardToList = (req, res, next) => {
   List.findByIdAndUpdate(listId, { $addToSet: { cards: cardId }}).then(() => next());
 }
 
+const findList = (req, res, next) => {
+  const listId = req.body.listId;
+  List.findById(listId)
+    .then((list) => {
+      req.boardId = list.boardId;
+      next();
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+}
+
 exports.createList = createList;
 exports.sendList = sendList;
 exports.updateList = updateList;
 exports.addCardToList = addCardToList;
-
+exports.findList = findList;
